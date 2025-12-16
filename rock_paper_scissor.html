@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .spin {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            border-top: 5px solid rgb(255, 255, 255);
+            animation: Spin 2s linear infinite;
+
+        }
+
+        @keyframes Spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #loader {
+            height: 200px;
+            width: 400px;
+            background-color: red;
+            font-size: x-large;
+            gap: 30px;
+            position: absolute;
+            top: 300px;
+            left: 525px;
+            border-radius: 10px;
+            color: antiquewhite;
+        }
+
+        .title {
+            height: 200px;
+            width: 93%;
+            background-color: rgba(255, 0, 0, 0.436);
+            margin-top: 30px;
+            margin-left: 60px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 18px 27px rgb(0, 0, 0, 0.36);
+        }
+
+        .play_area {
+            width: 93%;
+            height: 400px;
+            width: 93%;
+            background-color: rgba(255, 255, 255, 0.436);
+            margin-top: 30px;
+            margin-left: 60px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 18px 27px rgb(0, 0, 0, 0.36);
+        }
+
+        .play_area>select {
+            height: 35px;
+            width: 150px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 0, 0, 0.436);
+            font-size: medium;
+            text-align: center;
+        }
+
+        .play_area>select>option:nth-child(odd) {
+            background-color: rgba(255, 0, 0, 0.436);
+        }
+
+        .play_area>select>option:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.436);
+            color: black;
+        }
+
+        .play_area>button {
+            height: 35px;
+            width: 90px;
+            font-size: medium;
+            border: none;
+            border-radius: 5px;
+            background-color: gold;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .play_area>button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 27px rgb(0, 0, 0, 0.37);
+        }
+
+        .score {
+            width: 93%;
+            height: 400px;
+            width: 93%;
+            background-color: rgba(255, 255, 255, 0.436);
+            margin-top: 30px;
+            margin-left: 60px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            box-shadow: 0px 18px 27px rgb(0, 0, 0, 0.36);
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .score>div {
+            height: 300px;
+            width: 400px;
+
+            font-size: larger;
+            border: none;
+        }
+
+        #user_points,
+        #pc_points {
+            font-size: 50px;
+
+
+        }
+
+        #player {
+            border-right: 2px solid rgb(0, 0, 0, 0.35);
+            text-align: center;
+        }
+
+        #pc {
+            text-align: center;
+        }
+
+        .match_result {
+            height: 350px;
+            width: 93%;
+            background-color: rgba(255, 0, 0, 0.436);
+            margin-top: 30px;
+            margin-left: 60px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 18px 27px rgb(0, 0, 0, 0.36);
+        }
+    </style>
+    <!-- <link rel="stylesheet" href="rock_paper_scissoe.css"> -->
+</head>
+
+<body>
+    <div class="title">
+        <h1> Rock Paper Scissor</h1>
+        <h2>Let's Play 🎮</h2>
+    </div>
+    <div class="play_area">
+        <h1>No of Round : <span id="round">1</span></h1>
+        <p>Click Choose and select your option</p><br>
+        <select id="choice" required>
+            <option>--Choose--</option>
+            <option value="0">Rock 🪨</option>
+            <option value="1">Paper 📜</option>
+            <option value="2">scissor ✂️</option>
+        </select><br><br>
+        <button onclick="load();round(); main();">Submit</button>
+        <p>
+            <font style="color: red;"> Note : Scroll down ⬇️ To Check the Result</font>
+        </p>
+    </div>
+    <div class="score">
+        <div id="player">
+            <h1>User points</h1>
+            <h3 id="user_points">0</h3>
+        </div>
+        <div id="pc">
+            <h1>Computer points</h1>
+            <h3 id="pc_points">0</h3>
+        </div>
+    </div>
+
+    <div class="match_result">
+        <h1 style="color: red;">Results</h1>
+        <hr style="border: 2px solid rgb(0, 0, 0,0.35);" width="80%">
+        <h1 id="result"></h1>
+        <h3 id="user"></h3>
+        <h3 id="comp"></h3>
+    </div>
+
+    <div id="loader" style="display: none;">
+        <h1>Thinking</h1>
+        <div class="spin"></div>
+    </div>
+    <script>
+
+        function load() {
+            const loading = document.getElementById("loader").style;
+            loading.display = "flex";
+            loading.flexDirection = "row";
+            loading.alignItems = "center";
+            loading.justifyContent = "center";
+
+
+            setTimeout(() => {
+                document.getElementById("loader").style.display = "none"
+            }, 2000);
+        }
+
+        let count = 1;
+        let pc_points = 0;
+        let user_points = 0;
+
+        function round() {
+            count++;
+            document.getElementById("round").innerHTML = count
+
+            if (count > 10) {
+                alert("Game is Over !!!  Computer points : " + pc_points + " Your points :  " + user_points);
+                window.location.reload();
+            }
+
+        }
+
+
+
+        function main() {
+
+            let value = document.getElementById("choice").value;
+            console.log("Value fetched successfully...");
+
+            const result = document.getElementById("result");
+            let selection = ["rock", "paper", "scissor"];
+
+            let computer = Math.floor(Math.random() * 2);
+            console.log(computer);
+
+            let process = selection[computer];
+            let user = selection[value];
+
+            document.getElementById("user").innerHTML = "Your choice is " + user;
+            document.getElementById("comp").innerHTML = "Computer choice is " + process;
+
+            if (value == 0 && computer == 1 || value == 1 && computer == 2 || value == 2 && computer == 0) {
+                result.innerHTML = "Computer Won"
+                pc_points++;
+            }
+            else if (value == 0 && computer == 2 || value == 1 && computer == 0 || value == 2 && computer == 1) {
+                result.innerhtml = "User Won";
+                user_points++;
+            } else {
+                result.innerHTML = "Match Draw , We are same"
+            }
+
+            document.getElementById("pc_points").innerHTML = pc_points;
+            document.getElementById("user_points").innerHTML = user_points;
+
+        }
+    </script>
+</body>
+
+</html>
